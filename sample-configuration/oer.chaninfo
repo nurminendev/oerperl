@@ -1,0 +1,20 @@
+# YOU MAY WANT TO CHANGE THESE ALSO
+
+# chaninfo::<channel name>::user::<handle>::<user flags>
+chaninfo::#oer::user::EQU::ao
+# chaninfo::<channel name>::usermask::<handle>::<user hostmask>
+chaninfo::#oer::usermask::EQU::equ@*.equnet.org
+# chaninfo::<channel name>::user::<handle>::<user flags>
+chaninfo::#oer::user::EQU-dyn::od
+# chaninfo::<channel name>::password::<handle>::<encrypted password>
+chaninfo::#oer::password::EQU-dyn::7aMF5L3hfuypw
+# chaninfo::<channel name>::usermask::<handle>::<user hostmask>
+chaninfo::#oer::usermask::EQU-dyn::equ@*.saunalahti.fi
+# chaninfo::<channel name>::wordbk::<word mask>
+chaninfo::#oer::wordbk::*alladvantage*
+# chaninfo::<channel name>::nickbk::<nick mask>
+chaninfo::#oer::nickbk::mizz*::disable your script, then come back (EQU)
+# chaninfo::<channel name>::permban::<hostmask>
+chaninfo::#oer::permban::*!*@203.46.144.106
+# chaninfo::<channel name>::floodvars::<repeat expire>::<repeat limit>::<interval>::<max lines>::<max chars>
+chaninfo::#oer::floodvars::1800::3::60::10::1600

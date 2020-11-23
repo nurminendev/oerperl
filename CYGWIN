@@ -1,0 +1,29 @@
+You want to run oer on Windows? With Cygwin you can. Since there isn't
+a Cygwin version of MySQL, you can only run the plain oer version for
+now.  Cygwin is a GNU/UNIX emulator for Windows. Here is how you can
+get oer running with Cygwin:
+
+- Download Cygwin from the Cygwin site http://cygwin.com/setup.exe
+
+- Run setup.exe
+
+- Flag under "Devel" the following packages (only BIN required)
+	* autoconf
+	* gcc
+	* make
+
+- Flag under "Libs" the following packages (only BIN required)
+	* crypt
+
+- Proceed to install
+
+- Download the newest oer archive (oer-1.0-xx.tar.gz) and place it
+  into your Cygwin home dir (for example C:\Cygwin\home\Administrator)
+
+- Start Cygwin: Start->Programs->Cygwin->Cygwin Bash Shell
+
+- Ungzip & untar the oer archive with: "tar xvzf oer-1.0-xx.tar.gz"
+
+- Go to the oer-dist dir by writing "cd oer-dist"
+
+- For the remaining installation steps see INSTALL in oer-dist

@@ -1,0 +1,14 @@
+oerperl 1.0.1
+---------------------------------------------------------------------------
+
+    - 'list scripts' now correctly requires only channel operator access
+
+    - Merged with oer 1.0-65 (PART fix)
+
+    - Added README.oerperl
+
+
+oerperl 1.0
+---------------------------------------------------------------------------
+
+    - Initial release.

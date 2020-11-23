@@ -1,0 +1,7 @@
+# YOU MUST CHANGE THESE VALUES IF YOU WANT TO HAVE CONTROL
+# OVER OER. USE ONLY STATIC/TRUSTED HOSTMASKS!!
+
+# admin::<handle>::<flags, set "n" for unremovable>
+admin::EQU::n
+# mask::<handle>::<hostmask>
+mask::EQU::equ@*.equnet.org

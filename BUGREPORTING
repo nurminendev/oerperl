@@ -1,0 +1,85 @@
+Quick steps for the impatient
+-----------------------------
+
+First make sure you are running the latest version (check also
+http://oer.equnet.org/testing). If so, then
+
+./configure --enable-debug
+make install
+./oer -c
+
+oer will now show debug messages on the screen. If your problem isn't
+solved, read on.
+
+First and most important
+------------------------
+
+Always get the latest version of oer (released or in testing) and see
+if it works for you. If not, read on.
+
+There are total of 3 bug type categories, the procedure depends on
+what kind of bug you are dealing with. With all bug types you should
+always append the following information to E-mails:
+
+- oer version (info command while oer is running)
+- Operating system type & version (type "uname -a" in console)
+- Compiler type & version (type "gcc -v" or "cc -V" in console)
+- Cygwin version (+ library versions) if you are running oer
+  under Cygwin
+
+Archive, configure, compilation & installation bugs
+---------------------------------------------------
+
+If there is something wrong with the archive, send an E-mail to
+equ@equnet.org with subject "oer bug report: archive". In the message
+part describe the problem in detail.
+
+If you think you have found a problem with "configure" send an E-mail
+to equ@equnet.org with subject "oer bug report: configure" and attach
+the console output of "./configure", config.log and config.status into
+the E-mail.
+
+If there is a compiling warning or error send an E-mail to
+equ@equnet.org with subject "oer bug report: compilation" and attach
+the console output into the E-mail.
+
+If there is a problem with the installation ("make install") send an
+E-mail to equ@equnet.org with subject "oer bug report: installation"
+and attach the console output into the E-mail.
+
+Operational bug
+---------------
+
+If you think that oer missbehaves in some way but doesn't crash, run
+configure with "./configure --enable-debug". Then start oer with
+"./oer -c -d 8 -o". Make oer quit and verify that it did. Then send
+the oer-<pid>.output via E-mail to equ@equnet.org with the subject
+"oer bug report: operational".
+
+Fatal bug
+---------
+
+If oer terminates unexpectedly ("crashes") proceed as follows.  First
+off, configure oer with the following options:
+
+"./configure --enable-debug"
+
+and compile. Then make sure that your command shell allows core dumps:
+
+limit coredumpsize 10000 (bash)
+ulimit -c 10000          (csh/tcsh)
+
+Then start oer with "./oer -c -d 8 -o". After oer "crashes" start gdb
+by writing "gdb oer core" and then get a backtrace by writing "bt".
+Send both, the oer-<pid>.output and the backtrace from console to
+equ@equnet.org with the subject "oer bug report: fatal".
+
+Other types of bugs
+------------------- 
+
+If the bug or problem you are dealing with doesn't belong to any of
+the above bug categories, send an E-mail to equ@equnet.org with
+subject "oer bug report: unknown" and describe the bug or problem in
+detail.
+
+        Thank you in advance

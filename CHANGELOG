@@ -1,0 +1,953 @@
+1.0-65
+------
+
+- Updated also the copyright information in the version string
+- Removed a obsolete definition from the source (OER_MAXTARGETS)
+- PART detection had a typo which broke at least cycle in some
+  cases, fixed (Thanks must go to Mike)
+
+1.0-64
+------
+
+- Rewrote the IRC client protocol parser due the PART issue
+  discovered in -63 (this change could break just about
+  anything!)
+- Improved the channel mode, channel key and channel limit
+  parsing in oer (there is still room for improvement)
+- Improved the socket family detection so that oer should
+  no longer attempt to connect to a IPv4 address from a
+  IPv6 address and visa versa
+  (Thanks must go to Renzo)
+- Fixed yet another IPv4 <-> IPv6 interoperatibility issue
+  (Thanks must go to Emperor)
+- Added Operating System information to CTCP VERSION if
+  supported (shown only to bot users)
+- Configure now checks for the availability of getaddrinfo()
+- I fixed a long lasting error in where oer would sometimes
+  get stuck in the server registration phase
+- Added notice flood protection (how on earth have I
+  overlooked this one)
+- oer would exit if it couldn't resolve the server
+  hostname, fixed
+- Changed gethostbyname() references to getaddrinfo()
+- ECONNRESET in connect() is no longer seen as a fatal error
+- Implemented reset autheds, requires global admin authorization
+- Implemented reset masks, requires global admin authorization
+  (Thanks must go to Refic)
+- Updated copyright strings to include year 2004
+
+1.0-63
+------
+
+- The PART message has changed in ircu (the Undernet ircd)
+  and it's derivatives (which include for example the ircd
+  used in QuakeNet) -- Until I sort out whether this is
+  indeed a bug or a known change in the newer ircu's here
+  is a fix for it
+  (Thanks must go to Emperor)
+- Added uptime in seconds to CTCP VERSION
+- Logoff didn't support multiple arguments, fixed
+- Updated copyright strings to include 2003
+- Added IPv6 support
+  (Initial patch provided by Rakkis / MadQon, Thanks!)
+- oer.pid was always created to current dir, fixed
+  (Thanks must go to Emperor)
+- edit and del chankey returned nothing to the user, fixed
+- dop, devoice, op and voice didn't check that the target
+  nick was on channel before issuing the MODE, fixed
+
+1.0-62
+------
+
+- Implemented additional checks to file I/O, zero size
+  configuration files in the case of disk/quota getting full
+  should no longer happen
+  (Thanks must go to Jarkko Torppa)
+- A major oversight happened in -60 when I rewrote the
+  authentication checks in parse.c, fixed
+  (Thanks must go to Emperor)
+
+1.0-61
+------
+
+- clearbans no longer removes permbans
+  (Thanks must go to many out there, refic for reminding me)
+- Increased the maximum length of a single topic from 160
+  to 250 characters, maximum number of topics is still 10
+  (Thanks must go to Jase)
+- There was a bug in the topic parser, fixed
+  (Thanks must go to Jase)
+- edit server was broken, fixed
+  (Thanks must go to Renzo)
+- jump didn't work as expected, fixed
+- Fixed several commands which would eventuelly at some point
+  corrupt their linked list structures:
+	+ deltopic()
+	+ delpermbans()
+	+ delnickbks()
+	+ delwordbks()
+	+ deladmin()
+	+ deladminmask()
+	+ deluser()
+	+ delusermask()
+	+ deltrusted()
+	+ delservice()
+	+ delchannel()
+	+ delkickreason()
+	+ deladverts()
+	+ delserver()
+	+ delchannelban()
+	+ timed_del()
+	+ mmode_del()
+	+ userleft()
+	+ cleanautheds()
+	+ freepubmsguser()
+	+ freenickchanges()
+- initmmodes() left the list non null, fixed
+- initmmodesfornick() left the list non null even if the
+  list became empty cause of the operation, fixed
+- Did some code clean up
+- The change in -60 which makes oer assume that a user which
+  has @ also haves +v was broken, fixed
+  (Thanks must go to Emperor)
+- Added commandline parameter -f so you can specify the
+  directory where oer looks for it's config/etc. files
+  (Thanks must go to Bafi)
+- validateflags() sometimes returned bogus values, fixed
+- Topic delete now allows you to delete several topics
+  at a time, for example "!td 2 5 7"
+  (Thanks must go to refic)
+- Removed the annoying "channel key is now.." and "deleted
+  channel key from.." messages
+  (Thanks must go to Renzo)
+- Removed the custom isnumber() function (oer wouldn't
+  compile on FreeBSD)
+  (Thanks must go to Trollo)
+- oer.ext can now have comments and empty lines like other
+  oer configuration files -- I also added some comments
+  to sample-configuration/oer.ext
+  (Thanks must go to VesaK)
+- A friend (user flag "f") is now also allowed to use prohibited
+  nicks, was the only thing a friend wasn't allowed to do
+  (Thanks must go to Renzo)
+
+1.0-60
+------
+
+- Added command line parameter -l to enable a alternative
+  directory for logging purposes (last/seen, raw and output)
+- Added a timer to adverts just like with on join quotes,
+  adverts on a busy channel were sent to each person that
+  joined the channel, everytime (would cause "Target changing
+  too fast" errors on heavy loaded bots and lead to adverts
+  dissapearing)
+- Added a chaninfo command (has also "s" chanflag support)
+- sstats should now report correctly the IRC server name even
+  if connecting to a Round Robin hostname
+- Made a change in order for oer to become more compatible
+  with oz.org (hopefully they fix the way they use ERR_BADPING)
+- oer will from now on delete all not yet executed but
+  scheduled MODEs for any nick that leaves a channel for any
+  reason before the MODEs in question get executed
+  (Thanks must go to Mauri Kinnunen)
+- From now on when oer detects a nick change oer will
+  re-target all pending MODEs for that nick to the new nick
+  (Thanks must go to Mauri Kinnunen)
+- There was a major oversight in how oer sometimes parsed
+  multi MODEs sent by the IRC server, fixed
+  (Thanks Renzo)
+- Permbans weren't always synced after multi MODEs, fixed
+- oer refused to ban itself on a channel even if chanflag "b"
+  wasn't set, fixed
+  (Thanks must go to Mauri Kinnunen)
+- oer will now detect if Q leaves the network and will re-auth
+  itself once Q re-joins the network
+  (Thanks must go to Mauri Kinnunen)
+- Implemented the first batch of type/value checking of user
+  input values
+  (Thanks must go to Mauri Kinnunen)
+- Rewrote most of the authentication checks in parse.c because
+  many commands were simply broken, I hope I didn't break too
+  much while doing so
+  (Thanks Renzo)
+- oer will now assume that users with +o also have +v and
+  check for +v if a +o user should loose their +o (oer wasn't
+  seeing +v on users which had +o)
+  (Thanks must go to Mauri Kinnunen)
+- Removed some extra/non-necessary checks from parse.c
+- Added a queuestats command (has also "s" chanflag support)
+- From now on some basic network related error messages are
+  always linked in (and shown) regardless if you specify
+  --enable-debug or not
+
+1.0-59
+------
+
+- Removed the check for +m in flood protection (at least
+  QuakeNet lets a +v user talk even if banned)
+- Unban didn't unban +o users, fixed
+- oer allowed auto rejoin & part rejoin banvars to be 0
+  even if chanflag "r" was set, fixed
+- Added del chanmode command
+- Added user flag "n" which can be used to disallow someone
+  the right to give oer commands (for instance this can be
+  used with bots to prevent missuse through those bots with
+  a say command)
+- Fixed some issues with vhost
+- Added del vhost command
+- Fixed a major problem with mmodes and timeds (mmodes/timeds
+  could just vanish without being executed, Thanks must go to
+  Mauri Kinnunen)
+- oer will from now on strip mIRC colors and control characters
+  when parsing a channel topic
+- The "reset" command introduced in -58 broke del adverts,
+  del nickbks, del permbans and del wordbks (fixed)
+- Permbans weren't removed from the channel when they were
+  removed with the "reset" command, fixed
+- Signals were broken on newer Solaris versions (and have
+  been for a long time), fixed
+- Added support for signal SIGUSR1 which can be used to
+  increase the level of debugging (0..max and max->0)
+- Implemented a force flush to disk every x rows, set
+  OER_FORCE_FLUSH in oer-common.h to the value you want (if
+  you want immediate updates you would set it to 1)
+- If oer couldn't join a channel because of IRC server error
+  439, oer will now retry joining the channel in question
+  after the amount of seconds specified by the IRC server have
+  elapsed
+- Did some tweaking to oer version and copyright strings
+- Increased the length of ext's message part, it can now be
+  432 bytes in length assuming the IRC server will accept it
+
+1.0-58
+------
+
+- It was possible to add a flag multiple times with one
+  command, fixed (eg. edit chanflags oooooo)
+- If a channel had force-topic set (chanflag "t") and Q
+  was on channel with forcetopic, it would lead to a
+  battle, fixed (Q is allowed if q friendly mode is set
+  or q is set as a service)
+- If you set any of the banvars to 0, the ban in question
+  won't be set (if for example you don't want your users
+  to be banned for swearing set the bad word banvar to 0)
+- Did some autoconf/Makefile tweaking
+- The destination directory where oer and it's configs get
+  installed can be specified in "make install" again (bad
+  move, I was too busy to fix it properly)
+- list handles will now go through global admins also
+- Added functionality for external information to be
+  displayed through oer, see the online help for command
+  "ext" (ext has also "s" chanflag support)
+- When validating any of the flags oer didn't clear the
+  destination buffer which could lead to some problems on
+  some platforms, fixed
+- Updated CYGWIN
+- Updated BUGREPORTING (added a section for you lazy people)
+- Added "reset" command (see Online Help)
+
+1.0-57
+------
+
+- Added support for chanmodes +c/+C (a QuakeNet extension)
+- Forced logoff broke in -56, fixed
+- If changing a dynamic user to a static one, oer will
+  from now on logoff the user automatically
+- Updated HELP
+- Manual logoff didn't work if channel had chanflag "x", fixed
+- Added '+' and '!' to allowed channel prefixes (RFC 2811)
+
+1.0-56
+------
+
+- Localized pattern matching, if you have some weird oer
+  behaviour (bankicking even if there is not a exact wordbk
+  match etc), I suggest you test out this version
+- If a channel has the "G" chanflag set and a opped non-admin
+  user triggers the flood protection, the user is now deopped
+  first then banned (and kicked in case of repeat flood)
+- "del mask admin" reports now correctly the handle and mask
+- Updated HELP
+- wordbk's support now also exact matches (single words)
+- edit password can no longer be sent to a channel
+- Added a timeout to the registration phase (timeout is 10
+  minutes after which oer will connect to the next server)
+- You can no longer change the destination directory with
+  "make install", use configure from now on
+- For obvious reasons " can no longer be used as a prefix
+- The last command now encloses messages in "
+- oer no longer permits a user from channel A to use oer's
+  commands which require no channel parameter on channel B
+  (the only problem with the old behaviour was that a user
+  from channel A could flood channel B using oer)
+- Internal dynamic admin (global flag "d") wasn't deleted
+  when disconnecting from a server, fixed
+- Added a priority class for adverts, oer should no longer
+  cause excess flood with many (more than 30) small (less
+  than 50 characters) adverts
+- Rewrote the way wordbk's are handled, from now on words
+  said by someone will be parsed word by word, not by sentence
+  (IMO, it makes more sense this way)
+- oer didn't notice if it was kicked by a service, fixed
+- Fixed yet another nick change bug
+- I tested this version of oer with muh 2.05d (a opensource
+  IRC bouncer http://mind.riot.org/muh) and it seems to
+  work, just remember to set the bouncer password as a server
+  password
+- In flood protection the +o/+v was given back before the ban
+  was removed, fixed
+- Changed "add channel" so that it takes now only one channel
+  and optionally chanflags (this way you can add inactive
+  channels and have oer not join them)
+- Basic support for a telnet proxy (specify the proxy string
+  in "make install" or use "edit proxysetup" while oer is
+  running)
+- Forced logons didn't work anymore with /msg, fixed
+- There were also some other issues with autheds, fixed
+- The channel modes weren't set on a channel created with
+  clonechannel, fixed
+- After a logoff no channel sync was done, fixed
+
+1.0-55
+------
+
+- On startup oer will no longer join all channels in parallel,
+  it will from now on wait until it has actually joined the
+  channel before joining another one (should cause less flood
+  if there are more than 10 channels to join)
+- If get'n'keep (global flag "g") nick is set, oer will no longer
+  attempt to get it's primary nick until it has joined all it's
+  channels (in some rare circumstances oer would get confused
+  about it's nick)
+- I made a typo in -54 that broke autheds for dynamic admins and
+  channels without "x", fixed
+- Only global admins could force a logon, fixed
+- Fixed requestop rule #1 (nicks 4 -> 5) and furthermore channels
+  with more than 20 users are no longer automatically handled
+
+1.0-54
+------
+
+- Changed CTCP replies to a lower priority, it should now be
+  safer to set the global flag "f"
+- Added chanflag "X" to disallow using of action and say by
+  non admins
+- Flush and save now require at least channel admin privileges
+- If a dynamic admin or a user is deleted also autheds of that
+  admin or user (handle) must be deleted, fixed
+- There were several bugs relating to autheds and to the use
+  of the "x" chanflag, should be fixed now (Thanks must go to
+  Emperor| and QuakeNet's #Joensuu)
+- Changed the way list channels works, from now on channels
+  that have a key, are secret or are hidden aren't shown if
+  the command was sent to a channel (if the command is sent
+  to oer with /msg authorization checking will be done)
+- list channels also now shows if oer has +o on the channel
+- Quit, massmessage and raw commands all dropped the first
+  parameter if it was a valid IRC channel, fixed
+- saveconf() falsely stripped CONNECTION_STATE_PREFIX from
+  the live user value, fixed
+- getserver() always scanned from top of the server list not
+  from the current server if one was set, fixed
+- requestop will now request op from O immediatly after joining
+  a opless channel or right after the channel becomes opless
+  (until now oer would wait 300 seconds)
+- A dynamic admin can no longer be changed into a static one or
+  visa versa (use add admin)
+- Global admins without +o would be given +v on each sync, fixed
+
+1.0-53
+------
+
+- Cosmetic: increased the string buffer in parsemsg() to get
+  rid of the annoying parse error ("..buffer too small..")
+- Added support for QuakeNet's requestop feature, set chanflag
+  "R" to activate it (see QuakeNet's guide for more information)
+- oer would falsely attempt to re-op users if chanflag "D" was
+  set but oer wasn't opped itself, fixed
+- if setlocale() failed carbage would be displayed, fixed
+- lock would sometimes kick before +i was set, fixed
+- lock would sometimes choose a nick that was already flagged
+  for kicking, fixed (could be a problem on lagged servers)
+- list servers listed all servers as current, fixed
+- A inactive channel admin (user with "!" and "a" flags) is no
+  longer allowed to change own flags
+- Added a "cycle" command (useful to force oer to leave & join
+  a channel and in doing so reseting some internal variables)
+- locku didn't automatically unlock the channel after the last
+  user to be kicked was kicked, fixed
+- There was a bug in the get & keep nick feature which would
+  result in oer doing userhost queries for itself endlessly
+  (the bug was quite hard to trigger though), fixed
+- Added bstats command for reporting some bot statistics
+
+1.0-52
+------
+
+- Made some code optimizations
+- The alternative or a random nick was falsely saved into the
+  config file as primary nick, fixed
+- Added a internal dynamic admin feature (global flag "d")
+  which allows you to control oer from oer's userhost
+  (userhost is always user@host meaning ident + hostname)
+- Added usercopy command which allows you to copy users
+  within a channel or to another channel
+- Added edit server (you can change settings of the current
+  IRC server)
+- edit options admin allowed non protected admins to make
+  themselves/other admins protected, fixed
+- oer will now check that flags given to add, del or edit
+  are valid
+- global flags wasn't sorted if altered with edit flags
+- Channel flag "x" had broken dynamic users/admins, fixed
+- Command prefix and nick couldn't be the same, fixed
+- Wrote support for channelbans (automatic detection,
+  listing and clearing of them)
+- Updated all (C) strings to contain year 2002
+- In order to keep oer and oer+MySQL consistent (the initial
+  requirement was to fix a fatal oer+MySQL bug), parts of
+  the authentication code had to be rewritten
+- Some cosmetic fixes relating to clearing of variables
+- list channels showed +p channels and channel keys to
+  everyone, fixed
+- Rewrote oer's channel flood protection routines
+
+1.0-51
+------
+
+- oer will now only fallback to making USERHOST
+  queries, a WHO query is done on channel join
+- made some code cleanup relating to processenv()
+- oer will now write a signoff message in case it detects
+  a stoned server (if you see a "stoned server" signoff
+  message, it probably means that the ping frequency in the
+  server setting is too small, you need to increase it)
+- Fixed chanflag "U" for last, seen, quote, and nstats
+- Added global flag "p" to tell oer not to check for
+  a stoned server (some networks seem to have disabled the
+  defacto standard PING-PONG feature)
+- Fixed several issues with chanmode, chankey and
+  chanlimit (Thanks Renzo)
+- There was a very hard to find bug in multiple mode
+  processing that was introduced in -41, the bug would cause
+  unbans etc. not to be scheduled, fixed (Thanks Renzo,
+  Emperor| and Azo)
+
+1.0-50
+------
+
+- Fixed a potential crash when changing nicks, this bug was
+  introduced in -48 (Thanks Renzo)
+- Updated BUGREPORTING
+- There was a lurking bug in the message parsing, fixed (oer
+  would obey to commands even if there wasn't a whitespace
+  delimiting the prefix or nick name of oer and the command)
+- add/del/edit chanflags was missing a channel sync, fixed
+- Improved security for "list adverts" (when sent to a
+  channel, oer will check that there are no users that
+  shouldn't see the advert, if there are the advert won't
+  be shown)
+- Added chanflag "c" to disallow ACTIONS on channel
+
+1.0-49
+------
+
+- Fixed initial flooding of the console by processactions()
+  in debug mode
+- Decreased the default PRIVMSG/NOTICE barrier in
+  processactions() by one second
+- Changed oer not to quote messages with "(c)"
+- oer now displays the current server in sstats
+- Added a date command
+- Added the "V" chanflag (auto voice admins on join)
+- Removed the "(truncated)" from last command, as many
+  characters as possible is displayed from now on
+- Added a UPGRADING text file describing what usually
+  needs to be done when upgrading from version to version
+- Made on-join quoting return better quotes
+- Fixed some Solaris/SunOS specific bugs, debug-mode
+  should work again on those platforms
+- oer did not work with local channels, fixed (&unix)
+- Logons that are expired are now correctly detected as
+  soon as they expire
+- If oer is given a erroneus altnick and the primary nick
+  is taken, oer will use a random nick
+- Added channel flag "x" to tell oer not to timeout logons
+- oer will now write a file called oer.pid that will
+  contain the process id of oer (no further copies of oer
+  are started if this file exists and a process having
+  the pid in oer.pid is running and is owned by the user
+  trying to start oer)
+- Added tools/checkoer.sh to be put in crontab for you
+  people out their having unreliable UNIX shells
+- There is now a check when backuping configuration files
+  that the file being backed up hasn't got zero size
+  (with this change having "b" flag one should assure that
+  there is at least one working set of configs in   case of
+  quota/diskspace filling up)
+- If channel has "O" or "V" flags, dynamic admins are now
+  automatically opped or voiced on logon
+- Added chanlimit (works just like chankey)
+- You can run oer on Windows with Cygwin, the procedure is
+  explained in CYGWIN
+
+1.0-48
+------
+
+- Fixed a memory leak in cleanautheds()
+- oer would keep on setting the chanmode(s) on networks
+  which allow re-setting of channel modes, fixed
+- There were several issues with the "g" flag introduced
+  in -47, I hope I found them all
+- Rewrote the server registration bits
+- Fixed add nickbk/wordbk
+- Unified permbans with nickbks and wordbks (redo bans)
+- Changed all occurances of "lamer(s)" to "normal(s)"
+- Topic separator is now a #define in oer-common.h
+- Changed channelsync not to op/voice if channel doesn't
+  have "o"/"v" flag set
+- Added support for dynamic voice
+- Added chanflag "s" as in "serve all" (with this flag
+  you can allow anyone on channel to use the following
+  commands: help, info, uptime, sstats, last, quote,
+  seen and nstats -- THINK BEFORE you set this flag, it
+  will allow anyone to cause flood to oer and the channel)
+- Fixed error checking for getondiskmsgcount() in parse.c 
+- Minor tweaking to Makefile
+- There were a few places where a open file handle
+  wouldn't get closed, fixed
+- Added support for the remaining IRCNet user ID prefixes
+- If logging was switched on after starting oer the log
+  would be named oer-<pid>.log where as if logging was on
+  when oer was started the log was named oer-<pid>.raw
+  (now the latter is used in both cases)
+- On-join and manual quoting, last, seen and nstats didn't
+  work if last/seen logging wasn't enabled, they will now
+- add and del flags was broken for "l", fixed
+- Rewrote the command scheduling logic (and due to this
+  rewrital the wall command amongst others has been changed)
+- Not all CTCP's sent to a channel were checked for flood
+- Implemented nick flood protection (chanflag "k", also see
+  the Online Help for the 2 new parameters to floodvars)
+- Fixed the MAX CHANNEL detection (oer will now try to
+  rejoin a channel it couldn't join because of the maximum
+  channel limit)
+- Bogus chanmodes were sometimes set when oer was opped and
+  there were unset chanmodes (or a chankey)
+- There was a bug when syncing permbans, fixed
+- oer no longer stops parsing the configuration files if it
+  encounters a unparseable line
+
+1.0-47
+------
+
+- Fixed add user to allow adding users without flags
+- last and seen were broken for a nick that had no records
+- There was a lurking bug in channel mode detection
+- The last and seen logs were falsely opened in clonechannel()
+- A response resulting from the deletion of a channel
+  wasn't sent to the channel being deleted, fixed
+- Deleting permbans didn't work as expected, fixed
+- oer had problems parsing lines with very long words
+- One couldn't add a channel key if no channel modes had
+  been set, fixed
+- List flags now works the same way list chanflags does
+- Implemented add & del flags (works just like chanflags)
+- Sample kickreasons weren't copied over to the install
+  directory, fixed
+- Added global flag "b" (switch it on if you want oer to
+  make a backup of the configuration files when they are
+  being saved)
+- Added some additional checks to configuration saving
+- Added global flag "g" meaning get & keep nick (oer will
+  register itself on the server with a alternative or a
+  random nick but will keep on trying to get it's primary
+  nick as long as necessary, works also "on the fly")
+- Added chanflag "t" to indicate you want a topic lock
+  (all topic changes should go through oer)
+- On disconnect from the server not all of the internal
+  parameters were being reset, fixed
+- Added support for Q auth, see the Online Help for the
+  syntax (NOTICE! your Q password will be stored in plain
+  text, so extreme care should be taken)
+- The channel mode wasn't being set on rejoin, fixed
+- There was a longstanding bug where oer wouldn't respond
+  to some commands from a global admin if no channels had
+  yet been defined
+- "make install" allows now adding of dynamic global admins
+- Unified a bit the way nickbks and wordbks are being handled
+  in oer and oer+MySQL (you might want to reset your nickbks
+  and wordbks to get working kick reasons)
+- Fixed some minor memory leaks
+- Correct handling of the restricted connection indicator '^'
+- Added channel flag "N" to indicate that oer should
+  consider only bot users with "o" as channel operators
+  (can be used together with "U" to make oer see channel
+  operators without user records as normal users)
+- Fixed oer from flooding itself with USERHOST queries on
+  channels with hundreds of users
+- Fixed list nicks to not cause excess flood on channels
+  with hundreds of users
+- Fixed "make install" for shells not providing a system
+  wide install command
+- IRC REALNAME didn't allow >1 words, fixed
+- Changed the way "lamers" are being picked on random ban,
+  random ban & kick and lock
+- Removed the notice that one shouldn't remove oer's permbans
+
+1.0-46
+------
+
+- Added support for global admin passwords (works just
+  like with channel users, just obmit the channel)
+- NOTICE! Because of the above change you will have to
+  go through your configuration before running oer
+  and see that no admin (in oer.admins) has the "d" 
+  flag set, otherwise you will be unable to admin
+  oer because the admin has no password
+- Fixed a subtle bug when processing multiple modes
+- checkstoned will no longer be processed on startup
+- Fixed add server so that it really requires just the
+  hostname & port, other parameters are optional
+- Fixed add admin to allow adding admins without flags
+- There was another lurking bug in the authorization
+  checking, fixed
+- List chanflags verbose no longer fitted in to one
+  server message, fixed
+
+1.0-45
+------
+
+- Fixed uptime command for non /proc systems
+- Userhosts were being queried too fast on channel join
+- Rewrote code where floating point math was used
+- Added channel flag "M" and user flag "m" to prevent
+  normal users from adding, removing or changing their
+  hostmasks
+- oer didn't check for the "l" chanflag when the lock
+  command was issued by a non-admin user
+- Fixed also other issues with the lock command
+
+1.0-44
+------
+
+- Fixed the op and deop commands
+- When adding a new service trusteds were falsely scanned
+  for existance, fixed
+- Trusted and services (hosts) can now have wildcards
+- Fixed the order of KICK and MODE in !bk and !rbk
+- Fixed yet some MODE bugs (these all were introduced
+  in -42 when I changed the size of NICKLEN)
+- Fixed list channels to hide only +p & +s channels if
+  the user requesting the list isn't at least op on the
+  channel being listed
+- Made the oer main loop process actions even after
+  server I/O, should speed things up (not too much I hope)
+- Changed NICKLEN from 15 to 20
+
+1.0-43
+------
+
+- syncops() had a incorrect authorization check, fixed
+- The order of KICK and MODE in ban & kick was also fixed
+- When cycling a channel to gain ops the wait period
+  between rejoins was decreased from 10 to 1 second
+- Improved "make install"
+- Fixed the automatic synchronization that was called when
+  oer was opped
+- Fixed the service/server mode detection
+- Added a HELP file describing what YOU can do FOR ME
+- Fixed the "not a prototype" warnings for oer.c on Solaris
+
+1.0-42
+------
+
+- Support for !del channel without parameter(s) was removed
+- Added multiple parameter support for many commands,
+  see the Online help (marked with []...)
+- Changed NICKLEN, USERLEN, HOSTLEN and USERHOSTLEN to
+  more realistic values (as reference I used Linux and
+  the Undernet derived ircu, if you need to increase
+  these to suit your needs, edit oer-common.h)
+- Decreased the wall delay from 5 to 2 seconds
+- When chanflags L or S are set, added or deleted a more
+  informative message is displayed
+- Listing autheds always listed all hostmasks for a authed
+  handle, added support for start position
+
+1.0-41
+------
+
+- Did some code cleanup based on profiling information
+- Added an additional check to clonechannel()
+- Added a BUGREPORTING file that contains instructions
+  on how to send comprehensive bug reports
+- Implemented add & del chanflags (you just give the
+  flags you want to set or remove, not all of them)
+- Changed del channel command so that it allows you to
+  specify which channel to delete when sending the
+  command to the channel
+- Added devoice command
+- Restored multiple modes
+- Added support for services, this works just like
+  the Q friendly mode except you can have several hosts
+  (the global flag for services is "s")
+- Rewrote processenv() and some related functions
+- Backported pre_install.sh from oer+MySQL (allows you
+  to make your initial configuration in "make install")
+- Did some additional code cleanup
+- The default for oer is now to have no debug messages,
+  you will have to specify --enable-debug to configure
+  if you want the messages (the size reduction of the
+  optimized & striped binary vs. the binary with debug
+  messages & symbols is about 70%)
+- Added a TODO file (always first look at the TODO
+  before suggesting anew feature)
+- Added global flag "m" to make oer send messages
+  instead of notices (not preferred)
+- Added a validity check when adding new channels
+- Fixed a bug in authorization checking (for example
+  if you had a "dfv" user with *@* and a bunch of
+  "o" users with their respective masks, the *@* mask
+  would get matched for the "o" users)
+- There was a memory leak when deleting a user with
+  a password or removing the "d" flag from a user, fixed
+- Changed the way list chanflags works: you will from
+  now on have to specify "verbose" as a argument to
+  list chanflags if you want the verbose listing
+- Implemented server statistics (sstats)
+- The stoned server checking was obviously broken and
+  has always been (now only activity from server is
+  counted as activity -- you may have to change your
+  server ping frequencies to something more realistic,
+  see /trace <nick> for the server class then see
+  /stats y to see the respective Y: line, the ping
+  frequency is the 2nd parameter for the Y:line)
+
+1.0-40
+------
+
+- Did some code cleanup to avoid compiler warnings
+- Added channel flag "D" to enable de-op protection of
+  bot users with at least "o" flag
+- Made linenoise to be a value from MIN..pingfreq (you
+  will have to increase the value from 1 to something
+  sensible like 10-30 if you don't want Excess Flood)
+- Fixed the issue with ~ in ident (oer no longer saves
+  the ~ to the user ident, it will always be prefixed by
+  the server if no ident response is received)
+- Rewrote completely the scheduling of IRC commands to
+  be priority then time based (since this is the most
+  important part of oer, it will require a lot of testing
+  by you the users to find out all the possible problems)
+- Bumped up the amount of actions processed per loop from
+  1 to 2 (if you get Excess Floods, set the variable
+  OER_ACTIONS_PER_MAINLOOP in oer-common.h to 1)
+- If the configured bantype can't be set (because
+  of trusted domains or conflicting hostmask with oer)
+  oer will now also try other ban types
+- Added a THANKS file that contains a list (not 100%
+  accurate, sorry!) of people that have in some way
+  contributed in the development and/or testing of oer
+- Added clonechannel command
+- Made the combination of "d" and "f" user flags work
+
+1.0-39
+------
+
+- Fixed a longstanding bug where oer would take user@host
+  from the server as it's hostname instead of just the host
+- oer will now also use the user id returned by the server
+  instead of using the one in the config
+- Added a bantype setting for channels, see online help
+- Added a "all" and a "user@host" type to adverts
+- vhost flag wasn't set on edit vhost, fixed
+- Changed some memory allocations and de-allocations from
+  static to dynamic. The change should save up some memory
+  (the more users your bot has, the more memory is saved
+  by these changes)
+- Did some code cleanup
+- oer incorrectly tried joining a channel waiting
+  OER_AUTO_REJOIN_TIME seconds in between joins (the
+  correct one is OER_DELAY_BETWEEN_REJOINS
+- Added --enable-profile to configure (enable this to get
+  profiling information which you can study with prof/gprof)
+- Decreased the default net join period from 30 to 15 seconds
+- last & seen will now accept a second argument specifying
+  how many entries to list (1..MAX)
+
+1.0-38
+------
+
+- The inactivity flag is now also displayed in list users
+- Fixed the time.h detection (especially Debian users
+  suffered from this oversight)
+- Channel admins can no longer add the "a" flag to other
+  users making them channel admins
+- List channels will now also list user count
+- Added edit usermode, edit user and edit vhost
+- All edit commands should now send a response
+- Unified a bit the logic how responses are sent on add,
+  edit, del and list commands
+
+1.0-37
+------
+
+- Fixed segmentation faults that were triggered on
+  platforms lacking snprintf() if empty server
+  passwords were passed to parseconf()
+- Brought Copyright strings up to date
+- Added support for ERR_UNAVAILRESOURCE (meaning if
+  oer received ERR_UNAVAILRESOURCE from server because
+  of netsplit or such, oer would fail)
+- In addition to the set prefix oer will also now obey
+  commands prefixed with it's active nick
+
+1.0-36
+------
+
+- Added chanflag "G" to indicate that everyone is checked
+  for public flood (except service & admins)
+- Now the chanflags T, ! and U are also displayed
+
+1.0-35
+------
+
+- There was a strlen() after a free in snprintf()
+- If no server password was specified, garbage could
+  be displayed
+- Added chanflag "T" to indicate that oer should not
+  do topic handling for the channel
+- Added chanflag "!" to indicate that the channel is
+  inactive and should not be joined
+- Added chanflag "U" to indicate that only users on
+  bot (with +a or +o) are allowed to use oer
+ 
+1.0-34
+------
+
+- Fixed a subtle bug in processtimeds() that could
+  lead into bogus kick/ban reasons (it was a quite
+  small window, >= 2 timeds in one second before
+  processenv() was ever called)
+- Fixed safeban() to correctly return ident@host bans
+- Fixed the random kick reason
+- Added initial support for server passwords (last field
+  of server line, optional)
+
+1.0-33
+------
+
+- A syncbans() was missing in del permban and
+  in parseirc
+- Added "list handles" to get handle(s) for a specific
+  nick on a channel (eg. handles with matching hostmasks)
+- Made a quick locale fix to allow a wider spectrum of
+  acceptable characters for the c-lib functions such as
+  isprint() etc -- See "man locale" on how to set locale
+  before running oer (most Linux users running a fresh
+  Linux distribution should be fine)
+
+1.0-32
+------
+
+- Got rid of list.c/list.h (obsolete debugging functions)
+- Cleaned up Makefile
+- uptime() was missing a fclose()
+- Removed a memory leak in initparts()
+- Fixed several hostname related issues (there are
+  unfortunately some left)
+- Changed lastoff() to also look at the hostname
+- oer command prefix can now be upto 16 chars
+- list channels was missing
+- oer didn't handle unset channel modes, fixed
+
+1.0-31
+------
+
+- Changed the way nick/altnick is handled and added support
+  for a random nick (you'll have to change it manually once
+  the primary/secondary nick is available)
+- Added !list and !edit altnick because of the above change
+- Added inactivity user flag "!" (channel admins can set/
+  remove for users and admins for channel admins)
+- Added channel adverts (set flag "A" to enable these, see
+  add/del/list commands for advert specifics)
+- Added support for FreeBSD (a kludge for now until I have
+  some more time to find out what is wrong with FreeBSD)
+
+1.0-30
+------
+
+- Added paranoid channel flag "P" (combined with "u" flag
+  all dyn-ops are required to have valid logons to remain/get opped)
+- Fixed admin logon (2nd parameter is now the hostmask you wish to
+  get authed for the given handle)
+- Increased oer's channel rejoin delay from 3 to 10 seconds
+- Made !locku (new, automatically unlocked) and !lock accept
+  a reason for the channel lock (optional)
+
+1.0-29
+------
+
+- Fixed yet again a "banned for x minutes"
+- Fixed getserver() not to get stuck if only one
+  IRC server was in server list
+- Added !rbk
+- If there were bogus/lagged server/service KICK messages,
+  oer would segfault (Q for example caused them, sorry for
+  this one, I will be looking closely at re-writing the
+  channel routines)
+
+1.0-28
+------
+
+- Changed oer to correctly show the ban length on auto rejoin
+- Added flag "f" to make oer respond to ctcp queries from anyone
+- Added "q" flag, a Q-bot friendly mode
+- Added chanflag "O" for auto-opping admins even if not a chan user
+- Added some additional checks for server modes
+
+1.0-27
+------
+
+- Removed a few duplicate linefeeds
+- Added support to oer's parse() for non-fixed delimiters
+  (eg. you can have >1 spaces between parameters of
+  your /msg commands)
+- NOTICE! There was a oversight in password-encrypting,
+  which was fixed (this means that all passwords have
+  to be reset with edit password once the -27 version
+  is running)
+
+1.0-26
+------
+
+- A isme() check was missing when checking if someone
+  altered chanmodes (would cause oer to begin setting
+  chanmodes and never stop)
+- oer should now compile & run on NetBSD (1.2G tested)
+- I have written 3 scripts for managing oer's seen/last
+  log files: checklog.pl, fixlog.pl and logstrip.pl (the
+  scripts are in the tools sub-directory)
+- Made some informative messages less verbose
+- Added banvars (just like floodvars, see help for details)
+- Changed list channels to display channel key if one is set
+- chanflags are now alphabetically sorted in list chanflags
+- Made showing of the server idle percentage in the uptime
+  command optional (define OER_UPTIME_SHOW_IDLE in
+  oer-common.h if you wish it to be shown)
+
+1.0-25
+------
+
+- Normal users couldn't use non-channel specific list
+  commands with /msg (also /msg save & /msg flush
+  suffered from this oversight)
+- Improved system/environment checks in configure.in
+- oer should now compile & run on IRIX (6.5 tested)
+
+1.0-24
+------
+
+- First public release

@@ -1,0 +1,43 @@
+prefix		=	@prefix@
+INSTALL_PROG	=	@INSTALL@
+CC		=	@CC@
+LDFLAGS		=	@LDFLAGS@
+LIBS		=	@LIBS@
+CFLAGS		=	@CPPFLAGS@ @CFLAGS@
+ALWAYSDEP	=	config.h Makefile
+OBJS		=	ds.o misc.o network.o oer.o parse.o perl.o reg.o
+all:			oer
+oer:			$(ALWAYSDEP) $(OBJS) mycrypt.o
+			$(CC) $(LDFLAGS) -o oer $(OBJS) $(LIBS)
+			@echo ""
+			@echo "  Type \"make install\" to install oer"
+			@echo ""
+mycrypt:		$(ALWAYSDEP) mycrypt.o
+			$(CC) $(LDFLAGS) -o mycrypt mycrypt.o $(LIBS)
+oer.o:			$(ALWAYSDEP) oer.c oer.h oer-common.h ds.o network.o misc.o perl.o
+			$(CC) $(CFLAGS) -c oer.c
+mycrypt.o:		$(ALWAYSDEP) mycrypt.c
+			$(CC) $(CFLAGS) -c mycrypt.c
+ds.o:			$(ALWAYSDEP) ds.c ds.h oer-common.h oer.h misc.o reg.o
+			$(CC) $(CFLAGS) -c ds.c
+reg.o:			$(ALWAYSDEP) reg.c reg.h
+			$(CC) $(CFLAGS) -c reg.c
+misc.o:			$(ALWAYSDEP) misc.c misc.h oer-common.h oer.h
+			$(CC) $(CFLAGS) -c misc.c
+network.o:		$(ALWAYSDEP) network.c network.h oer-common.h oer.h parse.o ds.o misc.o
+			$(CC) $(CFLAGS) -c network.c
+parse.o:		$(ALWAYSDEP) parse.c parse.h oer-common.h oer.h ds.o misc.o reg.o
+			$(CC) $(CFLAGS) -c parse.c
+perl.o:			$(ALWAYSDEP) perl.c perl.h oer-common.h oer.h misc.o ds.o
+			$(CC) $(CFLAGS) -c perl.c
+
+install:		all
+			@./pre_install.sh $(prefix) $(INSTALL_PROG)
+.PHONY:			clean distclean
+clean:
+			-rm -f oer *.o
+distclean:
+			-rm -f oer *.o Makefile config.cache config.h config.log config.status
+
+
+

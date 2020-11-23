@@ -1,0 +1,12 @@
+- Always read the attached CHANGELOG for any important changes between
+  versions. If any of the oer file formats changes, you are possibly
+  prompted to take some action. The CHANGELOG will always list these
+  actions.
+
+- Invoke "make install" and answer "n" when prompted if you wish to
+  create the initial configuration for oer
+
+- "make install" will simply place the new oer binary to the
+  destination directory. You could also copy the "oer" binary over.
+
+- You are done.

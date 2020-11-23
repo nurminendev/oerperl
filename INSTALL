@@ -1,0 +1,27 @@
+Step 1
+------
+
+  "./configure"
+
+You can specify the destination dir with --prefix. It defaults to
+$HOME/oer. You can also specify --enable-debug to switch on debugging
+symbols. Specify --disable-opt to de-activate optimization. Also,
+specify --enable-profile if you want to enable profiling in the oer
+binary.
+
+Step 2
+------
+
+  "make"
+
+Step 3
+------
+
+  "make install"
+
+You will be prompted for some essential settings which oer needs to
+run. After you have answered all the questions the oer binary and the
+generated configuration files are placed in the directory specified by
+--prefix (defaults to $HOME/oer)
+
+After installing, if you want you can remove the oer-dist directory.

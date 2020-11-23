@@ -1,0 +1,11 @@
+# NORMALLY YOU WOULD CREATE THIS FILE WITH A SCRIPT
+# (FOR EXAMPLE OER-EXTSCRIPTS) TIMED WITH CRON 
+
+# <param1>::<param2>::<param3>::<param4>::<param5>::<message>
+
+# this would be called with !ext url oer
+url::oer::::::::http://oer.equnet.org
+# this would be called with !ext url equnet
+url::equnet::::::::http://www.equnet.org
+# this would be called with !ext systemp
+systemp::::::::::cpu temp is 30.0, system temp is 25.5c
